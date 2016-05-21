@@ -11,10 +11,11 @@ int *eval(char *a){
 	int op1, op2;
 	if(a[0] == '\0')
 		return NULL;
-	printf("outside teh loop");
-	printf("%s", a);	
+	//printf("outside teh loop\n");
+	//printf("%s", a);	
+	
 	while(a[0] != '\0'){
-		printf("inside the loop");
+		printf("inside the loop\n");
 		switch(a[0]){
 			case '+':case '-':case '*': case '/':
 				next = OPERATOR ;
@@ -26,29 +27,34 @@ int *eval(char *a){
 				next = SPACE;
 				break;
 		}
+		printf("next is %d\n ", next);
 		switch(curr){
 			case SPACE:
 				switch(next){
 					case SPACE:case OPERATOR:
 						break;
 					case DIGIT:
+						//printf("we were here");
 						num = 0;
 						break;
 				}
+				break;
 			case DIGIT:
 				switch(next){
 					case SPACE:
 						push(num,s);
-						printf("we pushed due to space");
+						printf("we pushed due to space\n");
 						break;
 					case DIGIT:
 						num = num * 10 + a[0] - '0'; 
+						printf("num is currently %d\n",num);
 						break;
 					case OPERATOR:
 						push(num,s);
-						printf("we pushed due to operator");
+						printf("we pushed due to operator\n");
 						break;
 				}	
+				break;
 			case OPERATOR:
 				if(isempty(s))
 					return NULL;
@@ -56,7 +62,7 @@ int *eval(char *a){
 				if(isempty(s))
 					return NULL;
 				op1 = pop(s);
-				printf("we pushed due to operator");
+				printf("we pushed due to operator\n");
 				switch(a[0]){
 					case '+':
 						num = op2 + op1;
@@ -75,12 +81,14 @@ int *eval(char *a){
 						push(num,s);
 						break;
 				}
+				break;
 		}
 		curr = next; 
 		a++;
+		printf("%s\n",a);
 	}
 	num = pop(s);
-	printf("in eval %d",num);
+	printf("in eval %d\n",num);
 	final = num;
 	return &final;
 }
